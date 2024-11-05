@@ -25,7 +25,7 @@ public class EchoServer extends AbstractServer
   final public static int DEFAULT_PORT = 5555;
   
   //Constructors ****************************************************
-  
+
   /**
    * Constructs an instance of the echo server.
    *
