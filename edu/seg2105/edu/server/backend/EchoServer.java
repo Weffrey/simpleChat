@@ -4,6 +4,7 @@ package edu.seg2105.edu.server.backend;
 // license found at www.lloseng.com 
 
 
+import edu.seg2105.client.common.ChatIF;
 import ocsf.server.*;
 
 /**
@@ -17,6 +18,13 @@ import ocsf.server.*;
  */
 public class EchoServer extends AbstractServer 
 {
+  //Instance variables **********************************************
+  
+  /**
+   * The interface type variable.  It allows the implementation of 
+   * the display method in the client.
+   */
+  ChatIF clientUI; 
   //Class variables *************************************************
   
   /**
@@ -25,7 +33,7 @@ public class EchoServer extends AbstractServer
   final public static int DEFAULT_PORT = 5555;
   
   //Constructors ****************************************************
-
+  
   /**
    * Constructs an instance of the echo server.
    *
@@ -72,13 +80,15 @@ public class EchoServer extends AbstractServer
       ("Server has stopped listening for connections.");
   }
   
+  //Exercise 1 Server Side **************************************
+
   /**
 	 * Hook method called each time a new client connection is
 	 * accepted. The default implementation does nothing.
 	 * @param client the connection connected to the client.
 	 */
 	protected void clientConnected(ConnectionToClient client) {
-		
+    clientUI.display("Client (you) has connected! :)");
 	}
 
 	/**
@@ -90,7 +100,7 @@ public class EchoServer extends AbstractServer
 	 */
 	synchronized protected void clientDisconnected(
 		ConnectionToClient client) {
-		
+		clientUI.display("Client (you) has dissconnected. See you soon. T-T");
 	}
 
   

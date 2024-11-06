@@ -129,7 +129,7 @@ public class ClientConsole implements ChatIF
     {
       host = "localhost";
     }
-
+// Exercise 1 Client Side b) ******************************************************
     try {
       if(args.length > 1){
         port = Integer.parseInt(args[1]);

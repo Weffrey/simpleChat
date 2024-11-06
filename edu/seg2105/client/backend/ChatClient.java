@@ -94,6 +94,8 @@ public class ChatClient extends AbstractClient
     System.exit(0);
   }
   
+  //Exercise 1 Client Side a) *****************************************************
+
   /**
 	 * Hook method called each time an exception is thrown by the client's
 	 * thread that is waiting for messages from the server. The method may be
