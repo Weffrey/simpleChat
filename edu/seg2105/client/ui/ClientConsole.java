@@ -1,3 +1,4 @@
+
 package edu.seg2105.client.ui;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
@@ -118,8 +119,8 @@ public class ClientConsole implements ChatIF
   public static void main(String[] args) 
   {
     String host = "";
-
-
+    int port = DEFAULT_PORT;
+    
     try
     {
       host = args[0];
@@ -128,7 +129,18 @@ public class ClientConsole implements ChatIF
     {
       host = "localhost";
     }
-    ClientConsole chat= new ClientConsole(host, DEFAULT_PORT);
+
+    try {
+      if(args.length > 1){
+        port = Integer.parseInt(args[1]);
+      } 
+    }
+      catch(NumberFormatException e){
+        System.out.println("Invalid port number - switching to Default Port");
+      }
+    
+    
+    ClientConsole chat= new ClientConsole(host, port);
     chat.accept();  //Wait for console data
   }
 }
