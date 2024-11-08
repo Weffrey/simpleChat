@@ -4,7 +4,6 @@ package edu.seg2105.edu.server.backend;
 // license found at www.lloseng.com 
 
 
-import edu.seg2105.client.common.ChatIF;
 import ocsf.server.*;
 
 /**
@@ -24,7 +23,6 @@ public class EchoServer extends AbstractServer
    * The interface type variable.  It allows the implementation of 
    * the display method in the client.
    */
-  ChatIF clientUI; 
   //Class variables *************************************************
   
   /**
@@ -57,6 +55,7 @@ public class EchoServer extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
     System.out.println("Message received: " + msg + " from " + client);
+    
     this.sendToAllClients(msg);
   }
     
@@ -88,7 +87,7 @@ public class EchoServer extends AbstractServer
 	 * @param client the connection connected to the client.
 	 */
 	protected void clientConnected(ConnectionToClient client) {
-    clientUI.display("Client (you) has connected! :)");
+    System.out.println("Client (you) has connected! :)");
 	}
 
 	/**
@@ -100,7 +99,7 @@ public class EchoServer extends AbstractServer
 	 */
 	synchronized protected void clientDisconnected(
 		ConnectionToClient client) {
-		clientUI.display("Client (you) has dissconnected. See you soon. T-T");
+    System.out.println("Client (you) has disconnected. See you soon. T-T");
 	}
 
   
@@ -136,6 +135,10 @@ public class EchoServer extends AbstractServer
     {
       System.out.println("ERROR - Could not listen for clients!");
     }
+    ServerConsole serverConsole = new ServerConsole(sv);  // Pass the existing server instance
+    serverConsole.accept();
   }
+  
+  
 }
 //End of EchoServer class

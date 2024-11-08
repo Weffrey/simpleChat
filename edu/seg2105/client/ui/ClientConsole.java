@@ -8,7 +8,8 @@ import java.io.*;
 import java.util.Scanner;
 
 import edu.seg2105.client.backend.ChatClient;
-import edu.seg2105.client.common.*;
+import edu.seg2105.client.common.ChatIF;
+
 
 /**
  * This class constructs the UI for a chat client.  It implements the
@@ -19,6 +20,7 @@ import edu.seg2105.client.common.*;
  * @author Dr Timothy C. Lethbridge  
  * @author Dr Robert Lagani&egrave;re
  */
+
 public class ClientConsole implements ChatIF 
 {
   //Class variables *************************************************
@@ -61,8 +63,7 @@ public class ClientConsole implements ChatIF
     } 
     catch(IOException exception) 
     {
-      System.out.println("Error: Can't setup connection!"
-                + " Terminating client.");
+      System.out.println("Error: Can't setup connection!" + " Terminating client.");
       System.exit(1);
     }
     

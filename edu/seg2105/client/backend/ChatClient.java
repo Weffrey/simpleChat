@@ -7,8 +7,10 @@ package edu.seg2105.client.backend;
 import ocsf.client.*;
 
 import java.io.*;
+import java.util.Scanner;
 
 import edu.seg2105.client.common.*;
+import edu.seg2105.edu.server.backend.EchoServer;
 
 /**
  * This class overrides some of the methods defined in the abstract
@@ -27,7 +29,11 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-
+  
+  /**
+   * Scanner to read from the console
+   */
+  Scanner fromConsole; 
   
   //Constructors ****************************************************
   
@@ -57,8 +63,13 @@ public class ChatClient extends AbstractClient
    */
   public void handleMessageFromServer(Object msg) 
   {
-    clientUI.display(msg.toString());
-    
+    if (msg.toString().startsWith("SERVER MSG>")) {
+		System.out.println(msg.toString());
+	}
+	else 
+	{
+		clientUI.display(msg.toString());
+	}
     
   }
 
@@ -71,7 +82,11 @@ public class ChatClient extends AbstractClient
   {
     try
     {
-      sendToServer(message);
+    	if(message.startsWith("#")) {
+    		handleUserCommand(message);
+    	} else {
+    		sendToServer(message);
+    	}
     }
     catch(IOException e)
     {
@@ -81,6 +96,84 @@ public class ChatClient extends AbstractClient
     }
   }
   
+  
+  private void handleUserCommand(String commandLine) {
+	  try {
+		  if(commandLine.equals("#quit")) 
+		  {
+			  quit();
+		  }
+		  
+		  else if(commandLine.equals("#logoff")) 
+		  {
+			  closeConnection();
+		  }
+		  
+		  else if(commandLine.startsWith("#sethost")) 
+		  {
+			  if(!(isConnected())) {
+				  String[] command = commandLine.split(" ");
+			        if (command.length > 1) {
+			            String host = command[1];
+			            setHost(host);  // Call setHost with the specified host
+			        } else {
+			            System.out.println("ERROR: No host specified.");
+			        }
+			  }else {
+				  System.out.println("You are already connected");
+			  }
+		  }
+		  
+		  else if(commandLine.startsWith("#setport")) 
+		  {
+			  if(!(isConnected())) {
+				  String[] command = commandLine.split(" ");
+			        if (command.length > 1) {
+			        	try {
+			                int port = Integer.parseInt(command[1]);
+			                setPort(port);  // Assuming you have a setPort method
+			            } catch (NumberFormatException e) {
+			                System.out.println("ERROR: Invalid port number.");
+			            }
+			        } else 
+			        {
+			            System.out.println("ERROR: No port specified.");
+			        }
+			  } else 
+			  {
+				  System.out.println("You are already connected");
+			  }
+		  }
+		  
+		  else if(commandLine.equals("#login")) 
+		  {
+			  if(!(isConnected())) {
+				  openConnection();
+			  } else {
+		            System.out.println("ERROR: Already connected.");
+			  }
+		  }
+
+		  else if(commandLine.equals("#gethost")) 
+		  {
+			  System.out.println("Host: " + getHost());
+			  
+		  }
+		  
+		  else if(commandLine.equals("#getport")) 
+		  {
+			  System.out.println("Port: " + getPort());
+		  }
+		  
+		  else {
+			  
+			  System.out.println("Command not found");
+		  }
+	} catch (Exception e) {
+		 	System.out.println("ERROR: Can not execute command" + e.getMessage());
+	}
+	  
+  }
   /**
    * This method terminates the client.
    */
@@ -120,7 +213,7 @@ public class ChatClient extends AbstractClient
   @Override
 	protected void connectionClosed() {
 		clientUI.display("Connection Closed");
-		quit();
+		
 	}
 }
 //End of ChatClient class
