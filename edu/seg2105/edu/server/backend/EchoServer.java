@@ -4,6 +4,8 @@ package edu.seg2105.edu.server.backend;
 // license found at www.lloseng.com 
 
 
+import java.io.IOException;
+
 import ocsf.server.*;
 
 /**
@@ -29,6 +31,7 @@ public class EchoServer extends AbstractServer
    * The default port to listen on.
    */
   final public static int DEFAULT_PORT = 5555;
+  private String key = "LoginID";
   
   //Constructors ****************************************************
   
@@ -54,9 +57,27 @@ public class EchoServer extends AbstractServer
   public void handleMessageFromClient
     (Object msg, ConnectionToClient client)
   {
-    System.out.println("Message received: " + msg + " from " + client);
+	String message = (String)msg;
+	if(message.startsWith("#login")) {
+		if(client.getInfo("loginID") == null) {
+			System.out.println(message);
+			String[] parts = message.split(" ");
+			client.setInfo(key , parts[1]);
+			
+		}else {
+			try {
+				client.sendToClient("ERROR: Already logged on.");
+			} catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	} else 
+	{
+		System.out.println("Message received: " + msg + " from " + client.getInfo(key));
+	    this.sendToAllClients("<" + client.getInfo(key) + ">" + msg);
+	}
     
-    this.sendToAllClients(msg);
   }
     
   /**
